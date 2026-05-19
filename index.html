@@ -347,10 +347,128 @@ footer {
 .reveal.in { opacity: 1; transform: none; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 
+/* ─── MOMENTS SLIDER ───────────────────────────── */
+.moments {
+  padding: 72px 0 80px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.moments-header {
+  padding: 0 64px 40px;
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.moments-header-left { display: flex; align-items: baseline; gap: 20px; }
+.moments-header .en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .8rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--amber);
+}
+.moments-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 300; color: var(--ink);
+}
+.moments-arrows { display: flex; gap: 10px; }
+.moments-arrow {
+  width: 44px; height: 44px;
+  background: none; border: 1px solid var(--border);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .25s, border-color .25s; flex-shrink: 0;
+}
+.moments-arrow:hover { background: var(--ink); border-color: var(--ink); }
+.moments-arrow:hover svg { stroke: var(--cream); }
+.moments-arrow svg {
+  width: 18px; height: 18px; stroke: var(--brown); fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  transition: stroke .25s;
+}
+.moments-track-wrap {
+  overflow: hidden; padding: 0 64px; cursor: grab;
+}
+.moments-track-wrap:active { cursor: grabbing; }
+.moments-track {
+  display: flex; gap: 16px;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+  user-select: none;
+}
+.moments-slide {
+  flex: 0 0 calc(33.333% - 11px);
+  aspect-ratio: 4/3; overflow: hidden; position: relative;
+  background: linear-gradient(135deg, #d4b896, #8b6040);
+}
+.moments-slide img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transition: transform .7s ease; pointer-events: none;
+}
+.moments-slide:hover img { transform: scale(1.05); }
+.moments-slide-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 28px 20px 16px;
+  background: linear-gradient(to top, rgba(20,14,9,.7) 0%, transparent 100%);
+  font-family: 'Shippori Mincho', serif;
+  font-size: .75rem; letter-spacing: .1em; color: rgba(255,255,255,.8);
+  opacity: 0; transition: opacity .3s;
+}
+.moments-slide:hover .moments-slide-caption { opacity: 1; }
+.moments-dots {
+  display: flex; justify-content: center; gap: 8px; margin-top: 32px;
+}
+.moments-dot {
+  width: 24px; height: 2px; background: var(--dust);
+  border: none; cursor: pointer; padding: 0;
+  transition: background .3s, width .3s;
+}
+.moments-dot.active { background: var(--amber); width: 40px; }
+
+/* ─── HAMBURGER ─────────────────────────────────── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-hamburger span {
+  display: block; width: 100%; height: 1px;
+  background: var(--brown);
+  transition: transform .35s ease, opacity .35s ease;
+  transform-origin: center;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.nav-drawer {
+  display: none;
+  position: fixed; top: 60px; left: 0; right: 0;
+  background: rgba(250,248,244,.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 199;
+  flex-direction: column;
+  padding: 0;
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, padding .4s ease;
+}
+.nav-drawer.open {
+  max-height: 320px;
+  padding: 8px 0 20px;
+}
+.nav-drawer a {
+  font-family: 'Shippori Mincho', serif;
+  font-size: .95rem; letter-spacing: .12em;
+  color: var(--brown); text-decoration: none;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--border);
+  transition: color .2s, background .2s;
+}
+.nav-drawer a:last-child { border-bottom: none; }
+.nav-drawer a:hover { color: var(--amber); background: rgba(200,137,42,.05); }
+
 /* ─── RESPONSIVE ───────────────────────────────── */
 @media (max-width: 880px) {
   nav { padding: 0 20px; }
   .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-drawer { display: flex; }
   .hero-content { bottom: 40px; left: 24px; right: 24px; flex-direction: column; align-items: flex-start; }
   .hero-scroll { display: none; }
   .intro { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
@@ -358,6 +476,9 @@ footer {
   .gallery-caption { padding: 16px 24px 56px; }
   .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 180px 180px; }
   .gallery-cell:nth-child(1) { grid-row: auto; grid-column: 1 / 3; }
+  .moments-header { padding: 0 24px 32px; }
+  .moments-track-wrap { padding: 0 24px; }
+  .moments-slide { flex: 0 0 calc(80% - 8px); }
   .area { padding: 72px 24px; }
   .area-grid { grid-template-columns: 1fr; }
   .contact { padding: 80px 24px; }
@@ -378,6 +499,15 @@ footer {
     <li><a href="#area">エリアガイド</a></li>
     <li><a href="#contact">お問い合わせ</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<nav class="nav-drawer" id="navDrawer">
+  <a href="#intro" class="drawer-link">物件紹介</a>
+  <a href="#gallery" class="drawer-link">ギャラリー</a>
+  <a href="#area" class="drawer-link">エリアガイド</a>
+  <a href="#contact" class="drawer-link">お問い合わせ</a>
 </nav>
 
 <!-- HERO -->
@@ -454,27 +584,74 @@ footer {
   </div>
   <div class="gallery-grid">
     <div class="gallery-cell">
-      <!-- <img src="images/living.jpg" alt="リビング"> -->
+      <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?w=900&auto=format&fit=crop" alt="リビング">
       <span class="gallery-cell-label">リビング（メイン）</span>
     </div>
     <div class="gallery-cell" style="background:linear-gradient(135deg,#b89068,#6b4530)">
-      <!-- <img src="images/engawa.jpg" alt="縁側"> -->
+      <img src="https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=600&auto=format&fit=crop" alt="縁側">
       <span class="gallery-cell-label">縁側</span>
     </div>
     <div class="gallery-cell" style="background:linear-gradient(135deg,#8aaf78,#4a6e38)">
-      <!-- <img src="images/garden.jpg" alt="専用庭"> -->
+      <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600&auto=format&fit=crop" alt="専用庭">
       <span class="gallery-cell-label">専用庭</span>
     </div>
     <div class="gallery-cell" style="background:linear-gradient(135deg,#c4a068,#7a5030)">
-      <!-- <img src="images/kitchen.jpg" alt="キッチン"> -->
+      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&auto=format&fit=crop" alt="キッチン">
       <span class="gallery-cell-label">シェアキッチン</span>
     </div>
     <div class="gallery-cell" style="background:linear-gradient(135deg,#a89078,#5a4030)">
-      <!-- <img src="images/room.jpg" alt="個室"> -->
+      <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&auto=format&fit=crop" alt="個室">
       <span class="gallery-cell-label">個室</span>
     </div>
   </div>
   <p class="gallery-caption reveal">※ 物件の写真をご用意の上、プレースホルダーに差し替えてください。</p>
+</section>
+
+<!-- MOMENTS SLIDER -->
+<section class="moments" id="moments">
+  <div class="moments-header reveal">
+    <div class="moments-header-left">
+      <span class="en">Moments</span>
+      <h2>暮らしの断片</h2>
+    </div>
+    <div class="moments-arrows">
+      <button class="moments-arrow" id="momentsPrev" aria-label="前へ">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="moments-arrow" id="momentsNext" aria-label="次へ">
+        <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="moments-track-wrap" id="momentsWrap">
+    <div class="moments-track" id="momentsTrack">
+      <div class="moments-slide">
+        <img src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&auto=format&fit=crop" alt="食卓を囲む住人たち">
+        <span class="moments-slide-caption">食卓を囲む夜</span>
+      </div>
+      <div class="moments-slide">
+        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&auto=format&fit=crop" alt="リビングでの会話">
+        <span class="moments-slide-caption">リビングでの午後</span>
+      </div>
+      <div class="moments-slide">
+        <img src="https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?w=800&auto=format&fit=crop" alt="庭でのひととき">
+        <span class="moments-slide-caption">縁側・庭のひととき</span>
+      </div>
+      <div class="moments-slide">
+        <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&auto=format&fit=crop" alt="イベントの様子">
+        <span class="moments-slide-caption">ハウスイベント</span>
+      </div>
+      <div class="moments-slide">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop" alt="共同作業のひとコマ">
+        <span class="moments-slide-caption">一緒に料理する朝</span>
+      </div>
+      <div class="moments-slide">
+        <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&auto=format&fit=crop" alt="みんなでの作業">
+        <span class="moments-slide-caption">休日の集まり</span>
+      </div>
+    </div>
+  </div>
+  <div class="moments-dots" id="momentsDots"></div>
 </section>
 
 <!-- AREA GUIDE -->
@@ -486,42 +663,42 @@ footer {
   </div>
   <div class="area-grid">
     <div class="area-card reveal">
-      <div class="area-img"></div>
+      <div class="area-img"><img src="https://images.unsplash.com/photo-1590253230532-a67f6bc61b9e?w=600&auto=format&fit=crop" alt="横浜駅"></div>
       <p class="area-cat">Access</p>
       <div class="area-line"></div>
       <p class="area-name">横浜駅エリア</p>
       <p class="area-desc">自転車10分。東横線・京浜東北線・相鉄線など多路線が集結し、都内へのアクセスも快適なターミナル。</p>
     </div>
     <div class="area-card reveal" style="transition-delay:.1s">
-      <div class="area-img" style="background:linear-gradient(135deg,#a8c890,#5a8048)"></div>
+      <div class="area-img" style="background:linear-gradient(135deg,#a8c890,#5a8048)"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop" alt="公園"></div>
       <p class="area-cat">Nature</p>
       <div class="area-line"></div>
       <p class="area-name">掃部山・野毛山公園</p>
       <p class="area-desc">緑豊かな丘の公園が徒歩圏内に。朝の散歩やランニングで、都市の中の自然を身近に感じられます。</p>
     </div>
     <div class="area-card reveal" style="transition-delay:.2s">
-      <div class="area-img" style="background:linear-gradient(135deg,#c8a878,#805838)"></div>
+      <div class="area-img" style="background:linear-gradient(135deg,#c8a878,#805838)"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop" alt="グルメ"></div>
       <p class="area-cat">Gourmet</p>
       <div class="area-line"></div>
       <p class="area-name">野毛エリア</p>
       <p class="area-desc">個性豊かな飲食店が立ち並ぶ横浜の台所。仕事帰りの一杯から週末のディナーまで、食の選択肢が広がります。</p>
     </div>
     <div class="area-card reveal" style="transition-delay:.3s">
-      <div class="area-img" style="background:linear-gradient(135deg,#90aac0,#405878)"></div>
+      <div class="area-img" style="background:linear-gradient(135deg,#90aac0,#405878)"><img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=600&auto=format&fit=crop" alt="みなとみらい"></div>
       <p class="area-cat">Culture</p>
       <div class="area-line"></div>
       <p class="area-name">みなとみらい</p>
       <p class="area-desc">横浜の象徴的なウォーターフロント。美術館・ホール・ショッピングモールが揃い、休日の過ごし方を彩ります。</p>
     </div>
     <div class="area-card reveal" style="transition-delay:.4s">
-      <div class="area-img" style="background:linear-gradient(135deg,#c8b090,#785838)"></div>
+      <div class="area-img" style="background:linear-gradient(135deg,#c8b090,#785838)"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop" alt="元町中華街"></div>
       <p class="area-cat">Lifestyle</p>
       <div class="area-line"></div>
       <p class="area-name">元町・中華街</p>
       <p class="area-desc">異国情緒あふれる横浜の名エリア。おしゃれなセレクトショップや本格中国料理が日常に彩りを加えます。</p>
     </div>
     <div class="area-card reveal" style="transition-delay:.5s">
-      <div class="area-img" style="background:linear-gradient(135deg,#b0c8a0,#507040)"></div>
+      <div class="area-img" style="background:linear-gradient(135deg,#b0c8a0,#507040)"><img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&auto=format&fit=crop" alt="カフェ"></div>
       <p class="area-cat">Daily Life</p>
       <div class="area-line"></div>
       <p class="area-name">地元カフェ・商店街</p>
@@ -564,16 +741,78 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
 }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-/* ヒーロー画像スライド */
+
+/* ── ヒーロー画像スライド（クロスフェード修正） ── */
 const images = document.querySelectorAll('.hero-bg img');
 let index = 0;
-
 setInterval(() => {
-  images[index].classList.remove('active');
+  const prev = index;
   index = (index + 1) % images.length;
   images[index].classList.add('active');
+  setTimeout(() => images[prev].classList.remove('active'), 800);
 }, 5000);
-  
+
+/* ── Momentsスライダー ── */
+(function() {
+  const track    = document.getElementById('momentsTrack');
+  const wrap     = document.getElementById('momentsWrap');
+  const dotsEl   = document.getElementById('momentsDots');
+  const slides   = Array.from(track.children);
+  const visCount = () => window.innerWidth <= 880 ? 1 : 3;
+  let current = 0;
+
+  const maxIndex = () => Math.max(0, slides.length - visCount());
+
+  /* ドット生成 */
+  function buildDots() {
+    dotsEl.innerHTML = '';
+    const count = maxIndex() + 1;
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement('button');
+      d.className = 'moments-dot' + (i === current ? ' active' : '');
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    }
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, maxIndex()));
+    const slideW = slides[0].getBoundingClientRect().width + 16;
+    track.style.transform = `translateX(-${current * slideW}px)`;
+    dotsEl.querySelectorAll('.moments-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === current));
+  }
+
+  document.getElementById('momentsPrev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('momentsNext').addEventListener('click', () => goTo(current + 1));
+
+  /* ドラッグ / スワイプ */
+  let startX = 0, isDragging = false;
+  wrap.addEventListener('pointerdown', e => { startX = e.clientX; isDragging = true; wrap.setPointerCapture(e.pointerId); });
+  wrap.addEventListener('pointermove', e => { if (!isDragging) return; });
+  wrap.addEventListener('pointerup',   e => {
+    if (!isDragging) return; isDragging = false;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+  });
+
+  window.addEventListener('resize', () => { buildDots(); goTo(Math.min(current, maxIndex())); });
+  buildDots();
+})();
+const hamburger = document.getElementById('hamburger');
+const navDrawer = document.getElementById('navDrawer');
+hamburger.addEventListener('click', () => {
+  const isOpen = navDrawer.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+});
+document.querySelectorAll('.drawer-link').forEach(link => {
+  link.addEventListener('click', () => {
+    navDrawer.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-label', 'メニューを開く');
+  });
+});
 </script>
 </body>
 </html>
